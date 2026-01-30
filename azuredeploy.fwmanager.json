@@ -29,9 +29,9 @@
           },
           "virtualMachineSize": {
             "type": "string",
-            "defaultValue": "Standard_DS2_v2",
+            "defaultValue": "Standard_D2s_v3",
             "metadata": {
-              "description": "Virtual machine size"
+              "description": "Virtual machine size (e.g., Standard_D2s_v3, Standard_B2ms, Standard_D4s_v5). Any valid Azure VM size can be used."
             }
         },
           "location": {
@@ -103,11 +103,11 @@
             "name": "[variables('publicIPAddresses_azfw_hub_gw_pub_ip_name')]",
             "location": "[parameters('location')]",
             "sku": {
-                "name": "Basic"
+                "name": "Standard"
             },
             "properties": {
                 "publicIPAddressVersion": "IPv4",
-                "publicIPAllocationMethod": "Dynamic",
+                "publicIPAllocationMethod": "Static",
                 "idleTimeoutInMinutes": 4                
             }
         },
@@ -131,11 +131,11 @@
             "name": "[variables('publicIPAddresses_azfw_on_prem_gw_pub_ip_name')]",
             "location": "[parameters('location')]",
             "sku": {
-                "name": "Basic"
+                "name": "Standard"
             },
             "properties": {
                 "publicIPAddressVersion": "IPv4",
-                "publicIPAllocationMethod": "Dynamic",
+                "publicIPAllocationMethod": "Static",
                 "idleTimeoutInMinutes": 4
             }
         },
@@ -881,7 +881,8 @@
 					"name": "NetworkPolicyRules",
 					"location": "[parameters('location')]",
 					"dependsOn": [
-						"[resourceId('Microsoft.Network/firewallPolicies', variables('fwPolicy_name'))]"
+						"[resourceId('Microsoft.Network/firewallPolicies', variables('fwPolicy_name'))]",
+						"ApplicationPolicyRules"
 					],
 					"properties": {
 						"priority": 300,
